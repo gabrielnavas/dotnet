@@ -51,6 +51,22 @@ app.MapGet("/authenticated", (ClaimsPrincipal user) => {
   });
 }).RequireAuthorization();
 
+
+// precisa estar autenticado e deve ter o claim correto
+app.MapGet("/employee", (ClaimsPrincipal user) => {
+  return Results.Ok(new {
+    message = $"Authentication as {user.Identity.Name}"
+  });
+}).RequireAuthorization("Employee");
+
+
+// precisa estar autenticado e deve ter o claim correto
+app.MapGet("/admin", (ClaimsPrincipal user) => {
+  return Results.Ok(new {
+    message = $"Authentication as {user.Identity.Name}"
+  });
+}).RequireAuthorization("Admin");
+
 app.MapPost("/login", (User model) =>
 {
   var user = UserRepository.Get(model.Username, model.Password);
